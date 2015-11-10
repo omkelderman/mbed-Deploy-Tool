@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("mbed Deploy Tool")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Deploy mbed-bin to mbed-drive")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("mbed Deploy Tool")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2015 - Olle Kelderman")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
