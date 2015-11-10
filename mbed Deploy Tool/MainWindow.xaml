@@ -1,0 +1,159 @@
+﻿<Window x:Class="mbed_Deploy_Tool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:mbed_Deploy_Tool"
+        mc:Ignorable="d"
+        Title="mbed Deploy Tool" Height="700" Width="525" Closing="Window_Closing">
+    <Grid x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="{x:Type GroupBox}">
+                <Setter Property="Margin" Value="3" />
+            </Style>
+        </Grid.Resources>
+        <GroupBox>
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">Serial Port Settings</TextBlock>
+                    <ToggleButton x:Name="advancedSettingsButton" Margin="5,0,0,0" Checked="ToggleButton_CheckedUnChecked" Unchecked="ToggleButton_CheckedUnChecked">Toggle Advanced Settings</ToggleButton>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid Margin="0,5,0,0">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Margin" Value="5" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Right">COM-port:</TextBlock>
+                <ComboBox Grid.Column="1" x:Name="serialPortComboBox"></ComboBox>
+                <Button Grid.Column="2" Height="24" VerticalAlignment="Top" Click="reloadButton_Click">Reload COM-ports</Button>
+
+                <Grid x:Name="advancedSettings" Grid.ColumnSpan="3" Grid.Row="1" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock HorizontalAlignment="Right">Speed (baud):</TextBlock>
+                    <ComboBox Grid.Column="1"  x:Name="BaudRateComboBox" IsEditable="True" PreviewTextInput="numbersOnly_PreviewTextInput" DataObject.Pasting="numbersOnly_Pasting">
+                        <ComboBoxItem Content="300"/>
+                        <ComboBoxItem Content="600"/>
+                        <ComboBoxItem Content="1200"/>
+                        <ComboBoxItem Content="2400"/>
+                        <ComboBoxItem IsSelected="True" Content="9600"/>
+                        <ComboBoxItem Content="14400"/>
+                        <ComboBoxItem Content="19200"/>
+                        <ComboBoxItem Content="38400"/>
+                        <ComboBoxItem Content="57600"/>
+                        <ComboBoxItem Content="115200"/>
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Right">Data bits:</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" x:Name="dataBitsUpDown" Text="8" PreviewTextInput="numbersOnly_PreviewTextInput" DataObject.Pasting="numbersOnly_Pasting" MouseWheel="dataBitsUpDown_MouseWheel" />
+
+                    <TextBlock Grid.Row="2" HorizontalAlignment="Right">Stop bits:</TextBlock>
+                    <ComboBox Grid.Row="2" Grid.Column="1"  x:Name="stopBitsComboBox">
+                        <ComboBoxItem Content="0"/>
+                        <ComboBoxItem IsSelected="True" Content="1"/>
+                        <ComboBoxItem Content="1.5"/>
+                        <ComboBoxItem Content="2"/>
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="3" HorizontalAlignment="Right">Parity:</TextBlock>
+                    <ComboBox Grid.Row="3" Grid.Column="1" x:Name="parityComboBox">
+                        <ComboBoxItem IsSelected="True" Content="None"/>
+                        <ComboBoxItem Content="Odd"/>
+                        <ComboBoxItem Content="Even"/>
+                        <ComboBoxItem Content="Mark"/>
+                        <ComboBoxItem Content="Space"/>
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="4" HorizontalAlignment="Right">Flow control:</TextBlock>
+                    <ComboBox Grid.Row="4" Grid.Column="1" x:Name="flowControlComboBox">
+                        <ComboBoxItem Content="None"/>
+                        <ComboBoxItem IsSelected="True" Content="XON/XOFF (software)"/>
+                        <ComboBoxItem Content="Request To Send (hardware)"/>
+                        <ComboBoxItem Content="Both"/>
+                    </ComboBox>
+                </Grid>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Binary File Settings">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Margin" Value="5" />
+                    </Style>
+                </Grid.Resources>
+                <TextBlock HorizontalAlignment="Right">mbed Drive:</TextBlock>
+                <ComboBox x:Name="driveComboBox" Grid.Column="1"></ComboBox>
+                <Button Grid.Column="2">Reload drives</Button>
+
+                <TextBlock Grid.Row="1" HorizontalAlignment="Right">Binary file:</TextBlock>
+                <TextBox x:Name="binFilePath" Grid.Row="1" Grid.Column="1" />
+                <Button Grid.Row="1" Grid.Column="2" Click="browseButton_Click">Browse</Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Header="Actions">
+            <Grid Margin="0,5,0,0">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="2" />
+                        <Setter Property="Padding" Value="3" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="connectButton" Click="connectButton_Click">Connect</Button>
+                <Button Grid.Column="1" x:Name="disconnectButton" Click="disconnectButton_Click" IsEnabled="False">Disconnect</Button>
+                <Button Grid.Column="2" x:Name="resetButton" PreviewMouseLeftButtonDown="resetButton_MouseLeftButtonDown" PreviewMouseLeftButtonUp="resetButton_MouseLeftButtonUp" IsEnabled="False">Reset</Button>
+                <Button Grid.Column="3" x:Name="clearOutputButton" Click="clearOutputButton_Click" Content="Clear output"/>
+                <Button Grid.Column="4" x:Name="deployButton" Click="deployButton_Click" ToolTip="Copy the bin-file onto the mbed-drive">Deploy</Button>
+                <ProgressBar x:Name="deployProgressBar" Grid.Column="5" Margin="3" Visibility="Hidden" IsIndeterminate="True" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="3" Header="mbed Output">
+            <TextBox ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     x:Name="outputTextBox" IsReadOnly="True" FontFamily="Courier New" FontSize="10.667" IsEnabled="False"></TextBox>
+        </GroupBox>
+    </Grid>
+</Window>
